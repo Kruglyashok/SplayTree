@@ -16,7 +16,7 @@ void TextToBin::readTxtFile(const char *inpFilename, const char* outFilename)
 		std::cout << "\nin and out files were opened" << std::endl;
 		while (!feof(inputFile))
 		{
-			fscanf_s(inputFile, "%I64d,%[^\n,],%[^\n,]", &rec.ISBN, rec.author, sizeof(char) * strlen, rec.title, sizeof(char) * strlen);
+			fscanf_s(inputFile, "%I64d,%[^\n,],%[^\n,]", &rec.ISBN, rec.author, sizeof(char) * maxstrlen, rec.title, sizeof(char) * maxstrlen);
 			std::cout << "isbn = " << rec.ISBN << " auth = " << rec.author << " title = " << rec.title << std::endl;
 			fwrite(&rec, rec_size, 1, outputFile);
 		}
@@ -58,7 +58,7 @@ void TextToBin::searcRec(const char * binFileName, unsigned long long ISBN)
 		std::cout << "\nBin File was not found" << std::endl;
 	}
 }
-TextToBin::Record TextToBin::genRec(const unsigned long long ISBN, const char* author, const char* title) const
+Record TextToBin::genRec(const unsigned long long ISBN, const char* author, const char* title) const
 {
 	return Record(ISBN, author, title);
 }
