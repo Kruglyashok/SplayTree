@@ -1,4 +1,7 @@
 #pragma once
+#ifndef BINARY_TREE_H
+#define BINARY_TREE_H
+
 #include <iostream>
 #include <string>
 #include "text_to_bin.h"
@@ -31,3 +34,4 @@ private:
 	void printBinTree(const std::string&, const Node*, bool);
 	void printBinTree(const Node*);
 };
+#endif //BINARY_TREE_H
