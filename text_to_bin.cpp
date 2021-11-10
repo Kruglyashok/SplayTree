@@ -4,12 +4,12 @@ TextToBin::TextToBin()
 {
 }
 
-void TextToBin::readTxtFile(const char *inpFilename, const char* outFilename)
+void TextToBin::convertTxtToBin(const char *inpFilename, const char* outFilename)
 {
+	std::cout << "\nstart converting txt to bin" << std::endl;
 	setlocale(LC_ALL, "Russian");
 	Record rec{};
 	std::size_t rec_size = sizeof(rec);
-	std::cout << "rec_size = " << rec_size << std::endl;
 	FILE* inputFile, *outputFile;
 	if (!fopen_s(&inputFile, inpFilename, "r") && !fopen_s(&outputFile, outFilename, "w+b"))
 	{
@@ -17,11 +17,11 @@ void TextToBin::readTxtFile(const char *inpFilename, const char* outFilename)
 		while (!feof(inputFile))
 		{
 			fscanf_s(inputFile, "%I64d,%[^\n,],%[^\n,]", &rec.ISBN, rec.author, sizeof(char) * maxstrlen, rec.title, sizeof(char) * maxstrlen);
-			std::cout << "isbn = " << rec.ISBN << " auth = " << rec.author << " title = " << rec.title << std::endl;
 			fwrite(&rec, rec_size, 1, outputFile);
 		}
 		fclose(inputFile);
 		fclose(outputFile);
+		std::cout << "\ntxt to bin was written" << std::endl;
 	}
 	else
 	{
@@ -32,6 +32,7 @@ void TextToBin::readTxtFile(const char *inpFilename, const char* outFilename)
 
 void TextToBin::searcRec(const char * binFileName, unsigned long long ISBN)
 {
+	std::cout << "\nstart searching bin file for Record with " << ISBN << " key" << std::endl;
 	setlocale(LC_ALL, "Russian");
 	FILE* binFile;
 	Record rec{};
@@ -58,10 +59,12 @@ void TextToBin::searcRec(const char * binFileName, unsigned long long ISBN)
 		std::cout << "\nBin File was not found" << std::endl;
 	}
 }
+
 Record TextToBin::genRec(const unsigned long long ISBN, const char* author, const char* title) const
 {
 	return Record(ISBN, author, title);
 }
+
 void TextToBin::addRec(const char* binFileName, const Record& rec)
 {
 	FILE* binFile;
@@ -91,6 +94,30 @@ void TextToBin::displayRecByAddr(const char* binFileName, std::size_t addr)
 		fseek(binFile, rec_size * addr, SEEK_SET);
 		fread(&rec, rec_size, 1, binFile);
 		std::cout << "found Record: " << rec.ISBN << " " << rec.author << " " << rec.title << std::endl;
+		fclose(binFile);
+	}
+	else
+	{
+		std::cout << "\nBin File was not found" << std::endl;
+	}
+}
+
+void TextToBin::printBinFileContents(const char* binFileName)
+{
+	std::cout << "\nprinting bin file contents" << std::endl;
+	setlocale(LC_ALL, "Russian");
+	FILE* binFile;
+	Record rec{};
+	std::size_t rec_size = sizeof(rec);
+	bool found{ false };
+	if (!fopen_s(&binFile, binFileName, "rb"))
+	{
+		std::cout << "\nbin file was opened" << std::endl;
+		while(fread(&rec, rec_size, 1, binFile) != 0)
+		{
+			std::cout << "found Record: " << rec.ISBN << " " << rec.author << " " << rec.title << std::endl;
+		}
+		fclose(binFile);
 	}
 	else
 	{

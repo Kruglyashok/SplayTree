@@ -8,16 +8,16 @@
 
 struct STreeNode
 {
-    unsigned long long key;
-    std::size_t addr;
-    STreeNode* parent;
-    STreeNode* left;
-    STreeNode* right;
+    unsigned long long key = 0;
+    std::size_t addr = 0;
+    STreeNode* parent = nullptr;
+    STreeNode* left = nullptr;
+    STreeNode* right = nullptr;
 
-    STreeNode(unsigned long long key)
+    STreeNode(unsigned long long key, std::size_t addr)
     {
         this->key = key;
-        this->addr = 0;
+        this->addr = addr;
         this->parent = nullptr;
         this->left = nullptr;
         this->right = nullptr;
@@ -39,12 +39,11 @@ class SplayTree
 public:
     SplayTree();
     SplayTree(STreeNode*);
-    STreeNode* find(unsigned long long);
-    void insert(unsigned long long);
+    STreeNode* search(unsigned long long);
+    void insert(unsigned long long, std::size_t);
     void deleteElem(unsigned long long);
     void printBinTree();
     void buildBinTree(const char*);
-    void inOrderPrint(bool brackets);
 };
 
 #endif //SPLAY_TREE_H

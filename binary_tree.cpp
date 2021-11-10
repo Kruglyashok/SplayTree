@@ -1,24 +1,23 @@
 ﻿#include "binary_tree.h"
 
-BinaryTree::BinaryTree(const char * _binFileName) : root(nullptr), binFileName(_binFileName) { std::cout << "\nBTree constr called" << std::endl; }
-
 BinaryTree::BinaryTree() : root(nullptr) {}
 
 BinaryTree::~BinaryTree()
 {
 }
 
-void BinaryTree::insert(unsigned long long key, Node* leaf)
+void BinaryTree::insert(unsigned long long key, std::size_t addr, Node* leaf)
 {
 	if (key < leaf->key)
 	{
 		if (leaf->left != nullptr)
 		{
-			insert(key, leaf->left);
+			insert(key, addr, leaf->left);
 		}
 		else
 		{
 			leaf->left = new Node;
+			leaf->left->addr = addr;
 			leaf->left->key = key;
 			leaf->left->left = nullptr;
 			leaf->left->right = nullptr;
@@ -30,11 +29,12 @@ void BinaryTree::insert(unsigned long long key, Node* leaf)
 		{
 			if (leaf->right != nullptr)
 			{
-				insert(key, leaf->right);
+				insert(key, addr, leaf->right);
 			}
 			else {
 				leaf->right = new Node;
 				leaf->right->key = key;
+				leaf->right->addr = addr;
 				leaf->right->right = nullptr;
 				leaf->right->left = nullptr;
 			}
@@ -42,15 +42,16 @@ void BinaryTree::insert(unsigned long long key, Node* leaf)
 	}
 }
 
-void BinaryTree::insert(unsigned long long key)
+void BinaryTree::insert(unsigned long long key, std::size_t addr)
 {
 	if (root != nullptr)
 	{
-		insert(key, root);
+		insert(key, addr, root);
 	}
 	else
 	{
 		root = new Node;
+		root->addr = addr;
 		root->key = key;
 		root->left = nullptr;
 		root->right = nullptr;
@@ -105,12 +106,14 @@ void BinaryTree::buildBinTree(const char* binFileName)
 		FILE* binFile;
 		Record rec{};
 		std::size_t rec_size = sizeof(rec);
+		std::size_t count = 0U;
 		if (!fopen_s(&binFile, binFileName, "rb"))
 		{
 			std::cout << "\nbin file was opened" << std::endl;
 			while ((fread(&rec, rec_size, 1, binFile)) == 1)
 			{
-				this->insert(rec.ISBN);
+				this->insert(rec.ISBN, count);
+				count++;
 				std::cout << "new rec inserted = " << rec.ISBN << std::endl;
 			}
 			return;

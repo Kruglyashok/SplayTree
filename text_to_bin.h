@@ -24,11 +24,12 @@ class TextToBin
 {
 public:
 	TextToBin();
-	void readTxtFile(const char *, const char*);
+	void convertTxtToBin(const char *, const char*);
 	void searcRec(const char *, unsigned long long);
 	Record genRec(const unsigned long long, const char *, const char *) const;
 	void addRec(const char*, const Record&);
-	void displayRecByAddr(const char*, std::size_t addr);
+	void displayRecByAddr(const char*, std::size_t);
+	void printBinFileContents(const char*);
 };
 
 #endif 

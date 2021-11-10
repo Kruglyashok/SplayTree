@@ -8,27 +8,25 @@
 
 struct Node
 {
-	unsigned long long key;
-	std::size_t addr;
+	unsigned long long key = 0;
+	std::size_t addr = 0;
 	Node *left, *right;
 };
 
 class BinaryTree
 {
 public:
-	BinaryTree(const char *);
 	BinaryTree();
 	~BinaryTree();
-	void insert(unsigned long long);
+	void insert(unsigned long long, std::size_t);
 	Node* search(unsigned long long);
 	void deleteElem(unsigned long long);
 	void buildBinTree(const char*);
 	void printBinTree();
 private:
 	Node* root;
-	std::string binFileName = "";
 	Node* minValueNode(Node*);
-	void insert(unsigned long long, Node*);
+	void insert(unsigned long long, std::size_t, Node*);
 	Node* search(unsigned long long, Node*);
 	Node* deleteElem(unsigned long long, Node*);
 	void printBinTree(const std::string&, const Node*, bool);

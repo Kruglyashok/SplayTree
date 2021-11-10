@@ -179,7 +179,7 @@ SplayTree::SplayTree(STreeNode* rt)
     this->root = rt;
 }
 
-STreeNode* SplayTree::find(unsigned long long x)
+STreeNode* SplayTree::search(unsigned long long x)
 {
     STreeNode* ret = nullptr;
     STreeNode* curr = this->root;
@@ -200,21 +200,21 @@ STreeNode* SplayTree::find(unsigned long long x)
     return ret;
 }
 
-void SplayTree::insert(unsigned long long x)
+void SplayTree::insert(unsigned long long key, std::size_t addr)
 {
     if (root == nullptr)
     {
-        root = new STreeNode(x);
+        root = new STreeNode(key, addr);
         return;
     }
     STreeNode* curr = this->root;
     while (curr != nullptr)
     {
-        if (x < curr->key)
+        if (key < curr->key)
         {
             if (curr->left == nullptr)
             {
-                STreeNode* newSTreeNode = new STreeNode(x);
+                STreeNode* newSTreeNode = new STreeNode(key, addr);
                 curr->left = newSTreeNode;
                 newSTreeNode->parent = curr;
                 splay(newSTreeNode);
@@ -222,11 +222,11 @@ void SplayTree::insert(unsigned long long x)
             }
             else curr = curr->left;
         }
-        else if (x > curr->key)
+        else if (key > curr->key)
         {
             if (curr->right == nullptr)
             {
-                STreeNode* newSTreeNode = new STreeNode(x);
+                STreeNode* newSTreeNode = new STreeNode(key, addr);
                 curr->right = newSTreeNode;
                 newSTreeNode->parent = curr;
                 splay(newSTreeNode);
@@ -258,7 +258,7 @@ STreeNode* subtree_min(STreeNode* subRoot)
 
 void SplayTree::deleteElem(unsigned long long x)
 {
-    STreeNode* del = find(x);
+    STreeNode* del = search(x);
     if (del == nullptr)
     {
         return;
@@ -324,13 +324,15 @@ void SplayTree::buildBinTree(const char* binFileName)
         FILE* binFile;
         Record rec{};
         std::size_t rec_size = sizeof(rec);
+        std::size_t count = 0U;
         if (!fopen_s(&binFile, binFileName, "rb"))
         {
             std::cout << "\nbin file was opened" << std::endl;
             while ((fread(&rec, rec_size, 1, binFile)) == 1)
             {
-                this->insert(rec.ISBN);
+                this->insert(rec.ISBN, count);
                 std::cout << "new rec inserted = " << rec.ISBN << std::endl;
+                count++;
             }
             return;
             fclose(binFile);
