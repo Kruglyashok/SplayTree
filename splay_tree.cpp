@@ -32,6 +32,7 @@ void SplayTree::zig(STreeNode* x)
 
         if (B != nullptr) B->parent = p;
     }
+    turns++;
 }
 
 void SplayTree::zig_zig(STreeNode* x)
@@ -93,6 +94,7 @@ void SplayTree::zig_zig(STreeNode* x)
 
         if (C != nullptr) C->parent = p;
     }
+    turns += 2;
 }
 
 void SplayTree::zig_zag(STreeNode* x)
@@ -153,6 +155,7 @@ void SplayTree::zig_zag(STreeNode* x)
 
         if (C != nullptr) C->parent = p;
     }
+    turns += 2;
 }
 
 void SplayTree::splay(STreeNode* x)
@@ -333,6 +336,7 @@ void SplayTree::buildBinTree(const char* binFileName)
                 this->insert(rec.ISBN, count);
                 std::cout << "new rec inserted = " << rec.ISBN << std::endl;
                 count++;
+                nodes++;
             }
             return;
             fclose(binFile);
@@ -343,4 +347,9 @@ void SplayTree::buildBinTree(const char* binFileName)
             return;
         }
     }
+}
+
+std::pair<std::size_t, std::size_t> SplayTree::getNodesTurns() const
+{
+    return std::pair<std::size_t, std::size_t>(nodes, turns);
 }

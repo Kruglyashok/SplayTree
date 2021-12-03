@@ -29,6 +29,7 @@ int main(int argc, char** argv)
 	// [[ SPLAY TREE ]]
 	SplayTree sTree{};
 	sTree.buildBinTree("rec_bin");
+	std::cout << "\nAvg. turns per elem = " << static_cast<float>(sTree.getNodesTurns().second) / static_cast<float>(sTree.getNodesTurns().first) << std::endl;
 	sTree.printBinTree();
 	sTree.insert(112233445567, 6);
 	sTree.printBinTree();

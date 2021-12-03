@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
+#include <utility>
 
 struct STreeNode
 {
@@ -26,6 +27,7 @@ struct STreeNode
 
 class SplayTree
 {
+private:
     STreeNode* root;
 
     void zig(STreeNode*);
@@ -35,7 +37,7 @@ class SplayTree
     void splay(STreeNode*);
     void printBinTree(const std::string&, const STreeNode*, bool);
     void printBinTree(const STreeNode*);
-
+    std::size_t nodes = 0, turns = 0;
 public:
     SplayTree();
     SplayTree(STreeNode*);
@@ -44,6 +46,7 @@ public:
     void deleteElem(unsigned long long);
     void printBinTree();
     void buildBinTree(const char*);
+    std::pair<std::size_t, std::size_t> getNodesTurns() const;
 };
 
 #endif //SPLAY_TREE_H
