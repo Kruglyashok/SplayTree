@@ -94,7 +94,7 @@ int main()
 	bool move{ true };
 	int minSum = INT32_MAX, curSum = 0;
 	int idx{ n - 1 }, jdx{ 0U };
-	while (move)
+	while (move && !( (n == 1) && (m == 1)) )
 	{
 		Print(permutations, num);
 		idx = n - 1;
@@ -119,21 +119,21 @@ int main()
 		}
 		move = nextSet(permutations, num);
 	}
-	//if (n == 1 && m == 1) cout << "\nminSum = " << a[0][0] << endl;
-	//else cout << "\nminSum = " << minSum << endl;
+	if (n == 1 && m == 1) cout << "\nminSum = " << a[0][0] << endl;
+	else cout << "\nminSum = " << minSum << endl;
 
-	//for (int i = n; i > 0; i--) a[i - 1][0] += a[i][0];
+	for (int i = n; i > 0; i--) a[i - 1][0] += a[i][0];
 
-	//for (int i = 1; i < m; i++) a[n - 1][i] += a[n - 1][i - 1];
+	for (int i = 1; i < m; i++) a[n - 1][i] += a[n - 1][i - 1];
 
-	//for (int i = n - 2; i >= 0; i--)
+	for (int i = n - 2; i >= 0; i--)
 
-	//	for (int j = 1; j < m; j++) {
+		for (int j = 1; j < m; j++) {
 
-	//		a[i][j] += min(a[i][j - 1], a[i + 1][j]);
+			a[i][j] += min(a[i][j - 1], a[i + 1][j]);
 
-	//	}
+		}
 
-	//cout << "\nmin found :"<<a[0][m - 1] - a[n - 1][0];
+	cout << "\nmin found :"<<a[0][m - 1] - a[n - 1][0];
 	return 0;
 }
